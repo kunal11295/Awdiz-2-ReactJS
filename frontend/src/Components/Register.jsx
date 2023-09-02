@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from "react-hot-toast";
+import api from "../ApiConfig";
+import { AuthContext } from "../Context/AuthContext";
 
 const Register = () =>
 {
+    const {state} = useContext(AuthContext)
     const [userData,setuserData] = useState({name:"",email:"",password:"",confirmpassword:""})
     const router = useNavigate()
     console.log(userData,"userData") 
@@ -21,11 +24,11 @@ const Register = () =>
         {
             
                 try{
-                    const response = await axios.post("http://localhost:4000/api/v1/register",{
+                    const response = await api.post("/register",{
 
                     name:userData.name, 
                     email:userData.email,
-                    password:userData.password,
+                    password:userData.password, 
                     confirmpassword:userData.confirmpassword
                     })
                     if(response.data.success)
@@ -42,6 +45,18 @@ const Register = () =>
             toast.error("All field are mandatory")
         }
     }
+
+
+    useEffect(()=>{
+        if(state?.user?.name)
+        {
+            toast.success("You are already Registered")
+            router('/')
+        }
+    },[state])
+
+
+
     return(
         <div>
         <h1>Register Page</h1>

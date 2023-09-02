@@ -17,6 +17,11 @@ app.use(express.json());
 
 app.use('/api/v1',router);
 
+// var job = new CronJob('* * */7 * *', () => {
+//     console.log("Excecuted in cron job;..")
+// })
+// job.start();
+
 mongoose.connect(process.env.MONGODB_URL)
 .then(()=>console.log("DB connected successfully."))
 .catch((err)=>console.log("DB error =>",err))
